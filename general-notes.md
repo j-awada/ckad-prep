@@ -11,6 +11,9 @@ k config view --raw
 # get all context names
 k config get-contexts -o name
 
+# get current context
+k config current-context
+
 # set context and namespace
 k config set-context $context_name --namespace=$namespace_name
 
