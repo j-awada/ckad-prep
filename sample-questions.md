@@ -145,3 +145,91 @@ k create job job1 --from=cronjob/cron1
 > A CronJob creates and owns Job objects, each job is its own independent resource.
 >
 > A job's `ownerReferences` points back to the CronJob
+
+### Events
+
+* List all events of a pod called __r327dc2f9__
+
+```bash
+# Search for an attribute to use
+k get events --help
+
+# Look at the event JSON object
+k get events -o json
+
+# Use --field-selector
+k get events --field-selector involvedObject.name=r327dc2f9
+```
+
+### Network policies and labels
+
+* Grant access to an app without changing the network policy. The network policy allows ingress for apps matching this label `web-access: true`.
+
+```bash
+# Add a new label to the app
+k label app web-access=true
+```
+
+### Secrets
+
+* Creating a secret
+
+```bash
+# List secrets types
+k create secret --help
+#  docker-registry   Create a secret for use with a Docker registry
+#  generic           Create a secret from a local file, directory, or literal value
+#  tls               Create a TLS secret
+
+k create secret generic test-secret --dry-run=client -o yaml
+
+# Create a secret with key/value pair
+k create secret generic --help
+k create secret generic test-secret --namespace default --from-literal key1=value1 --from-literal key2=value2 --dry-run=client -o yaml
+```
+
+* Attaching a secret to a pod
+
+```bash
+# Get deployment help
+k create deploy --help
+
+k create deployment test-deploy --image=nginx:latest --dry-run=client -o yaml
+k explain deployment.spec.template.spec.containers.env.valueFrom
+```
+
+```YAML
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: test-deploy
+  name: test-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-deploy
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: test-deploy
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx
+        env:
+        - name: key1
+          valuesFrom:
+            secretKeyRef:
+              name: test-secret
+              key: key1
+        - name: key2
+          valuesFrom:
+            secretKeyRef:
+              name: test-secret
+              key: key2
+```
