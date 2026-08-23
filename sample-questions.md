@@ -170,6 +170,25 @@ k get events --field-selector involvedObject.name=r327dc2f9
 k label app web-access=true
 ```
 
+Some resources like `networkpolicy` are not supported when generating boilerplate code using the `--dry-run=client` flag. Supported resources are listed as output of this command:
+
+```bash
+k create --help
+```
+
+To view the fields and value types of a network policy resource, drill down into the resource spec as follows:
+
+```bash
+k explain --recursive networkpolicy.spec
+```
+
+You can also check the API version using:
+
+```bash
+k api-resources | grep -i networkpolicy
+#networkpolicies                     netpol       networking.k8s.io/v1              true         NetworkPolicy
+```
+
 ### Secrets
 
 * Creating a secret
