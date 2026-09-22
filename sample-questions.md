@@ -173,7 +173,7 @@ k get events --help
 k get events -o json
 
 # Use --field-selector
-k get events --field-selector involvedObject.name=r327dc2f9
+k get events -o json --field-selector involvedObject.name=r327dc2f9
 ```
 
 </details>
