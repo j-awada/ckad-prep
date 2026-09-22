@@ -30,7 +30,8 @@ docker save myimage:1.0.1 > myimagetar.v2.tar
 <details>
 
 ```bash
-k run mypod --image=nginx:latest --port=80 --env=KEY1=VALUE1
+k run mypod --image=nginx:latest --port=80 --env=KEY1=VALUE1 --env=KEY2=VALUE2
+k get po mypod --show-labels
 k label po mypod app=backend
 k expose po mypod --name=myservice --port=80
 ```
