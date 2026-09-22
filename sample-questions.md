@@ -7,13 +7,17 @@
 * Push the image to the registry _myregistry_ under the username _me_ with tag latest
 * Save the OCI generated image in tar format under the name _myimagetar_ and tag v2
 
+<details>
+
 ```bash
 docker build -t myimage:1.0.1 .
 docker run -d --name mycontainer myimage:1.0.1
-docker tag myimage:1.0.1 myregistry/me:latest
-docker push myregistry/me:latest
+docker tag myimage:1.0.1 myregistry/myimage:latest
+docker push myregistry/myimage:latest
 docker save myimage:1.0.1 > myimagetar.v2.tar
 ```
+
+</details>
 
 ### Pod
 
@@ -22,6 +26,8 @@ docker save myimage:1.0.1 > myimagetar.v2.tar
 * The pod should have an environment variable `KEY1=VALUE1`
 * The pod should be tagged as `app=backend`
 * Create a service that exposes the pod on port 80, name the service _myservice_
+
+<details>
 
 ```bash
 k run mypod --image=nginx:latest --port=80 --env=KEY1=VALUE1
@@ -41,6 +47,8 @@ Port forward the service to localhost:
 ```bash
 k port-forward svc/myservice 8080:80
 ```
+
+</details>
 
 ### CronJob
 
@@ -62,6 +70,8 @@ k port-forward svc/myservice 8080:80
 * Terminate the pod after 22 seconds
 * Add a random command into the container of the job
 * Run a job from this cron jobs
+
+<details>
 
 ```bash
 k create cronjob cron1 --image=busybox --schedule="*/2 * * * *" --dry-run=client -o yaml
@@ -146,9 +156,13 @@ k create job job1 --from=cronjob/cron1
 >
 > A job's `ownerReferences` points back to the CronJob
 
+</details>
+
 ### Events
 
 * List all events of a pod called __r327dc2f9__
+
+<details>
 
 ```bash
 # Search for an attribute to use
@@ -161,9 +175,13 @@ k get events -o json
 k get events --field-selector involvedObject.name=r327dc2f9
 ```
 
+</details>
+
 ### Network policies and labels
 
 * Grant access to an app without changing the network policy. The network policy allows ingress for apps matching this label `web-access: true`.
+
+<details>
 
 ```bash
 # Add a new label to the app
@@ -189,9 +207,13 @@ k api-resources | grep -i networkpolicy
 #networkpolicies                     netpol       networking.k8s.io/v1              true         NetworkPolicy
 ```
 
+</details>
+
 ### Secrets
 
 * Creating a secret
+
+<details>
 
 ```bash
 # List secrets types
@@ -252,3 +274,5 @@ spec:
               name: test-secret
               key: key2
 ```
+
+</details>
